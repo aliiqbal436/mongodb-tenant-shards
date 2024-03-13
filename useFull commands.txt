@@ -1,0 +1,28 @@
+rs.initiate(
+  {
+    _id: "shard4rs",
+    members: [
+      { _id : 0, host : "192.168.1.29:50004" }
+    ]
+  }
+)
+
+rs.initiate(
+  {
+    _id: "cfgrs",
+    configsvr: true,
+    members: [
+      { _id : 0, host : "192.168.1.29:40001" }
+    ]
+  }
+)
+
+rs.status()
+
+sh.addShard("shard2rs/192.168.1.29:50003")
+
+
+mongosh mongodb://192.168.1.29:50004
+
+
+docker-compose -f docker-compose.yaml up -d
