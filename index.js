@@ -27,6 +27,7 @@ async function addShardToCluster(shardURI) {
     
         // Add shard to the cluster
         await client.db('admin').command({ addShard: shardURI });
+        // TODO: add shard and tenantid and shard in a colleciton
     
         console.log('Shard added to the cluster successfully');
     } catch (error) {
@@ -36,11 +37,11 @@ async function addShardToCluster(shardURI) {
     }
 }
 
-// addShardToCluster('shard4rs/192.168.1.29:50004')
+// addShardToCluster('shard4rs/192.168.1.29:50004', 'tenantId')
 
 
 // Setup range based sharding
-async function setupRangeBasedSharding(databaseName, collectionName) {
+async function setupRangeBasedSharding(databaseName, collectionName, tenantId, shardName) {
     const client = new MongoClient(mongoURI, mongoOptions);
     
     try {
@@ -48,7 +49,7 @@ async function setupRangeBasedSharding(databaseName, collectionName) {
         const database = client.db('admin');
         const practiceDatabase = client.db(databaseName);
         // Enable sharding for the database
-        // await database.command({ enableSharding: databaseName });
+        await database.command({ enableSharding: databaseName });
     
         // Create a shard key index
         await practiceDatabase.collection(collectionName).createIndex({ tenantId: 1 });
